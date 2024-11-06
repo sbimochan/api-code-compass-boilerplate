@@ -1,0 +1,31 @@
+const TABLE_NAME = 'table_name';
+
+/**
+ * Delete existing entries and seed values for `table_name`.
+ *
+ * @param   {object} knex
+ * @returns {Promise}
+ */
+export async function seed(knex) {
+  const { count } = await knex(TABLE_NAME).count('*').first();
+
+  // Prevent data from being cleared if it already exists.
+  if (+count) {
+    return;
+  }
+
+  return knex(TABLE_NAME)
+    .del()
+    .then(() => {
+      return knex(TABLE_NAME).insert([
+        {
+          colName: 'rowValue',
+          colName2: 'rowValue'
+        },
+        {
+          colName: 'rowValue',
+          colName2: 'rowValue'
+        }
+      ]);
+    });
+}
